@@ -1,9 +1,15 @@
 package com.seu.magiccamera;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRecording = false;
 
     private Button btn_record;
+
+    public static final int REQUEST_CAMERA_PERMISSION = 0x11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 magicEngine.savePicture(getOutputMediaFile(),null);
             }
         });
+
     }
 
     public static File getOutputMediaFile() {
@@ -78,10 +87,34 @@ public class MainActivity extends AppCompatActivity {
 
         return mediaFile;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                magicEngine.onResume();
+            } else {
+                finish();
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        magicEngine.onResume();
+        /**
+         * 适配M的动态权限
+         */
+        if (Build.VERSION.SDK_INT >= 23) {
+            int checkCameraPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA);
+            if (checkCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                        REQUEST_CAMERA_PERMISSION);
+            }else{
+                magicEngine.onResume();
+            }
+        }
     }
 
     @Override
