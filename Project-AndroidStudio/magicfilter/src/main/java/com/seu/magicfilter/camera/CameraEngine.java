@@ -1,10 +1,12 @@
 package com.seu.magicfilter.camera;
 
+import android.graphics.PixelFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
+import android.util.Log;
 
 import com.seu.magicfilter.camera.utils.CameraUtils;
 
@@ -12,7 +14,8 @@ import java.io.IOException;
 
 public class CameraEngine {
     private static Camera camera = null;
-    private static int cameraID = 0;
+    private static int cameraID = CameraInfo.CAMERA_FACING_FRONT;
+//    private static int cameraID = 0;
 
     public static Camera getCamera(){
         return camera;
@@ -66,6 +69,7 @@ public class CameraEngine {
         Size pictureSize = CameraUtils.getLargePictureSize(camera);
         parameters.setPictureSize(pictureSize.width, pictureSize.height);
         parameters.setRotation(90);
+        //camera.setDisplayOrientation(90);
         camera.setParameters(parameters);
     }
 
@@ -85,6 +89,27 @@ public class CameraEngine {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+    }
+
+    /** 设置回调 */
+    public static void setPreviewCallback(Camera.PreviewCallback callback) {
+        Size size = camera.getParameters().getPreviewSize();
+        if (size != null) {
+            PixelFormat pf = new PixelFormat();
+            PixelFormat.getPixelFormatInfo(camera.getParameters().getPreviewFormat(), pf);
+            int buffSize = size.width * size.height * pf.bitsPerPixel / 8;
+            try {
+                camera.addCallbackBuffer(new byte[buffSize]);
+                camera.addCallbackBuffer(new byte[buffSize]);
+                camera.addCallbackBuffer(new byte[buffSize]);
+                camera.setPreviewCallbackWithBuffer(callback);
+            } catch (OutOfMemoryError e) {
+                Log.e("Yixia", "startPreview...setPreviewCallback...", e);
+            }
+            Log.e("Yixia", "startPreview...setPreviewCallbackWithBuffer...width:" + size.width + " height:" + size.height);
+        } else {
+            camera.setPreviewCallback(callback);
+        }
     }
 
     public static void startPreview(){
@@ -121,4 +146,5 @@ public class CameraEngine {
         info.pictureHeight = size.height;
         return info;
     }
+
 }

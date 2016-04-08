@@ -1,12 +1,12 @@
 package com.seu.magicfilter.filter.base;
 
-import java.nio.FloatBuffer;
-
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 
 import com.seu.magicfilter.filter.base.gpuimage.GPUImageFilter;
 import com.seu.magicfilter.utils.OpenGlUtils;
+
+import java.nio.FloatBuffer;
 
 public class MagicCameraInputFilter extends GPUImageFilter{
     private static final String CAMERA_INPUT_VERTEX_SHADER = ""+

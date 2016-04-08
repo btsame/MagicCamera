@@ -16,16 +16,8 @@
 
 package com.seu.magicfilter.video;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
 import android.graphics.SurfaceTexture;
 import android.opengl.EGLContext;
-import android.opengl.GLES20;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -40,6 +32,13 @@ import com.seu.magicfilter.utils.Rotation;
 import com.seu.magicfilter.utils.TextureRotationUtil;
 import com.seu.magicfilter.video.gles.EglCore;
 import com.seu.magicfilter.video.gles.WindowSurface;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 /**
  * Encode a movie from frames rendered from an external texture image.

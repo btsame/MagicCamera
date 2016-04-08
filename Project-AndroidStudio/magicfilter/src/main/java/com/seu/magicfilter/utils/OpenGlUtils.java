@@ -1,14 +1,5 @@
 package com.seu.magicfilter.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.Buffer;
-import java.nio.IntBuffer;
-
-import javax.microedition.khronos.opengles.GL10;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -20,6 +11,15 @@ import android.util.Log;
 
 import com.seu.magicfilter.MagicEngine;
 import com.seu.magicfilter.filter.base.gpuimage.GPUImageFilter;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.Buffer;
+import java.nio.IntBuffer;
+
+import javax.microedition.khronos.opengles.GL10;
 
 public class OpenGlUtils {
 	public static final int NO_TEXTURE = -1;
@@ -239,7 +239,7 @@ public class OpenGlUtils {
             int displayWidth, int displayHeight){
 		if(filter == null)
 			return null;
-        int width = bitmap.getWidth();
+		int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int[] mFrameBuffers = new int[1];
         int[] mFrameBufferTextures = new int[1];
